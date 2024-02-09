@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pexels Search</title>
+</head>
+<body>
+    <input type="text" id="searchInput" placeholder="Enter search term">
+    <button onclick="fetchPexelsResults()">Search</button>
+
+    <div id="resultsContainer"></div>
+
+    <script>
+        function fetchPexelsResults() {
+            var apiKey = 'VLzat7oJJ3Z8GljD8QXRYv8DXlJLr0pDI7083sr4RuWflyCe9HkNL335';
+            var query = document.getElementById('searchInput').value;
+            var apiUrl = 'https://api.pexels.com/v1/search?query=' + query;
+
+            fetch(apiUrl, {
+                method: 'GET',
+                headers: {
+                    'Authorization': apiKey,
+                },
+            })
+            .then(response => response.json())
+            .then(data => displayResults(data.photos))
+            .catch(error => console.error('Error:', error));
+        }
+
+        function displayResults(photos) {
+            var resultsContainer = document.getElementById('resultsContainer');
+            resultsContainer.innerHTML = ''; // Clear previous results
+
+            photos.forEach(photo => {
+                var img = document.createElement('img');
+                img.src = photo.src.medium;
+                img.alt = photo.photographer;
+                resultsContainer.appendChild(img);
+            });
+        }
+    </script>
+</body>
+</html>
